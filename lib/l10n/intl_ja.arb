@@ -50,7 +50,7 @@
   "GPSAltitude" : "高度",
   "GPSProcessingMethod" : "測位方式",
   "GPSDate" : "GPS日付",
-  "Unknow": "情報がありません",
+  "Unknow": "情報を読み込めませんでした",
   "SelectImage" : "画像選択をしてください",
   "ChangeImage" : "画像を変更する"
 }

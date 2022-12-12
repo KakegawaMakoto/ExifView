@@ -40,15 +40,15 @@ class _HomePageState extends State<HomePage> {
     pickedMake = tags["Image Make"].toString();
     pickedModel = tags["Image Model"].toString();
     pickedDateTime = tags["Image DateTime"].toString();
-    pickedWidth = tags["EXIF ExifImageWidth"].toString();
-    pickedLength = tags["EXIF ExifImageLength"].toString();
+    pickedWidth = tags["Image ImageWidth"].toString();
+    pickedLength = tags["Image ImageLength"].toString();
     setState(() {
       image = File(pickedFile!.path);
-      pickedMake;
-      pickedModel;
-      pickedDateTime;
-      pickedWidth;
-      pickedLength;
+      // pickedMake;
+      // pickedModel;
+      // pickedDateTime;
+      // pickedWidth;
+      // pickedLength;
       //pickedDateTime.isEmpty ? pickedDateTime : pickedDateTime.substring(0, 16).replaceAll(":", "/").replaceFirst("/", ":", 12);
     });
     for (final entry in tags.entries) {

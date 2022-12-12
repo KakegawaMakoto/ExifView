@@ -77,7 +77,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "Sharpness": MessageLookupByLibrary.simpleMessage("シャープネス"),
         "ShutterSpeedValue": MessageLookupByLibrary.simpleMessage("シャッタースピード値"),
         "Software": MessageLookupByLibrary.simpleMessage("ソフトウェア"),
-        "Unknow": MessageLookupByLibrary.simpleMessage("情報がありません"),
+        "Unknow": MessageLookupByLibrary.simpleMessage("情報を読み込めませんでした"),
         "WhiteBalance": MessageLookupByLibrary.simpleMessage("ホワイトバランス")
       };
 }
