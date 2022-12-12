@@ -21,6 +21,8 @@ class _HomePageState extends State<HomePage> {
   dynamic pickedDateTime;
   dynamic pickedWidth;
   dynamic pickedLength;
+  dynamic pickedExifWidth;
+  dynamic pickedExifLength;
 
   //削除
   void clearimage() {
@@ -42,6 +44,8 @@ class _HomePageState extends State<HomePage> {
     pickedDateTime = tags["Image DateTime"].toString();
     pickedWidth = tags["Image ImageWidth"].toString();
     pickedLength = tags["Image ImageLength"].toString();
+    pickedExifWidth = tags["EXIF ExifImageWidth"].toString();
+    pickedExifLength = tags["EXIF ExifImageLength"].toString();
     setState(() {
       image = File(pickedFile!.path);
       // pickedMake;
@@ -54,7 +58,8 @@ class _HomePageState extends State<HomePage> {
     for (final entry in tags.entries) {
       print("${entry.key}: ${entry.value}");
     }
-
+    print("1${pickedLength}");
+    print(pickedWidth.runtimeType);
   }
 
   @override
@@ -187,7 +192,8 @@ class _HomePageState extends State<HomePage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(S.of(context).ImageWidth, style: TextStyle(fontSize: titleFont),), pickedWidth == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedWidth, style: TextStyle(fontSize: FontSize),)
+            //pickedWidth == "null" || pickedExifWidth.isEmpty ? Text(S.of(context).Unknow) :
+            Text(S.of(context).ImageWidth, style: TextStyle(fontSize: titleFont),), pickedWidth != "null"  ? SelectableText(pickedWidth,style: TextStyle(fontSize: FontSize),) : pickedLength != "null" ? SelectableText(pickedWidth) :Text(S.of(context).Unknow),
           ],
         ),
       ],
@@ -203,7 +209,7 @@ class _HomePageState extends State<HomePage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(S.of(context).ImageLength, style: TextStyle(fontSize: titleFont),), pickedLength == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedLength, style: TextStyle(fontSize: FontSize),)
+            Text(S.of(context).ImageLength, style: TextStyle(fontSize: titleFont),), pickedLength != "null" ? SelectableText(pickedLength,style: TextStyle(fontSize: FontSize),) : pickedLength != "null" ? SelectableText(pickedLength,) :Text(S.of(context).Unknow),
           ],
         ),
       ],
