@@ -33,6 +33,13 @@ class _HomePageState extends State<HomePage> {
   dynamic pickedISOSpeedRatings;
   dynamic pickedExposureProgram;
   dynamic pickedWhiteBalance;
+  dynamic pickedColorSpace;
+  dynamic pickedOffsetTime;
+  dynamic pickedFocalLength;
+  dynamic pickedFocalLengthIn35mm;
+  dynamic pickedLensModel;
+  dynamic pickedLightSource;
+  dynamic pickedFlash;
 
   //削除
   void clearimage() {
@@ -65,6 +72,13 @@ class _HomePageState extends State<HomePage> {
     pickedISOSpeedRatings = tags["EXIF ISOSpeedRatings"].toString();
     pickedExposureProgram = tags["EXIF ExposureProgram"].toString();
     pickedWhiteBalance = tags["EXIF WhiteBalance"].toString();
+    pickedColorSpace = tags["EXIF ColorSpace"].toString();
+    pickedOffsetTime = tags["EXIF OffsetTime"].toString();
+    pickedFocalLength = tags["EXIF FocalLength"].toString();
+    pickedFocalLengthIn35mm = tags["EXIF FocalLengthIn35mmFilm"].toString();
+    pickedLensModel = tags["EXIF LensModel"].toString();
+    pickedLightSource = tags["EXIF LightSource"].toString();
+    pickedFlash = tags["EXIF Flash"].toString();
     setState(() {
       image = File(pickedFile!.path);
       // pickedMake;
@@ -157,6 +171,10 @@ class _HomePageState extends State<HomePage> {
                             ExifMake(),
                             //モデル
                             ExifModel(),
+                            //レンズモデル
+                            ExifLensModel(),
+                            //標準時
+                            ExifOffsetTime(),
                             //撮影日時
                             ExifDateTimeOriginal(),
                             //シャッタースピード
@@ -165,10 +183,20 @@ class _HomePageState extends State<HomePage> {
                             ExifFNumber(),
                             //ISO
                             ExifISOSpeedRatings(),
+                            //焦点距離
+                            ExifFocalLength(),
+                            //35mm換算
+                            ExifFocalLengthIn35mmFilm(),
                             //撮影モード
                             ExifExposureProgram(),
                             //ホワイトバランス
                             ExifWhiteBalance(),
+                            //色空間
+                            ExifColorSpace(),
+                            //光源
+                            ExifLightSource(),
+                            //フラッシュ
+                            ExifFlash(),
                             //ファイル変更日時
                             ExifDateTime(),
                             //ソフトウェア
@@ -396,6 +424,97 @@ class _HomePageState extends State<HomePage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [Text(S.of(context).WhiteBalance, style: TextStyle(fontSize: titleFont),), pickedWhiteBalance == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedWhiteBalance, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+//色空間
+  ExifColorSpace() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).ColorSpace, style: TextStyle(fontSize: titleFont),), pickedColorSpace == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedColorSpace, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //標準時
+  ExifOffsetTime() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).OffsetTime, style: TextStyle(fontSize: titleFont),), pickedOffsetTime == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedOffsetTime, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //焦点距離
+  ExifFocalLength() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).FocalLength, style: TextStyle(fontSize: titleFont),), pickedFocalLength == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedFocalLength, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //35mm換算
+  ExifFocalLengthIn35mmFilm() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).FocalLengthIn35mmFilm, style: TextStyle(fontSize: titleFont),), pickedFocalLengthIn35mm == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedFocalLengthIn35mm, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //レンズモデル
+  ExifLensModel() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).LensModel, style: TextStyle(fontSize: titleFont),), pickedLensModel == "null" || pickedLensModel == "N/A" ? Text(S.of(context).Unknow) : SelectableText(pickedLensModel, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //光源
+  ExifLightSource() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).LightSource, style: TextStyle(fontSize: titleFont),), pickedLightSource == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedLightSource, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //フラッシュ
+  ExifFlash() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).Flash, style: TextStyle(fontSize: titleFont),), pickedFlash == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedFlash, style: TextStyle(fontSize: FontSize),)],
         ),
       ],
     );
