@@ -1,10 +1,13 @@
 import 'package:exifview/generated/l10n.dart';
+import 'package:exifview/service/admob.dart';
 import 'package:exifview/style/style.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:exif/exif.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'admob.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -40,11 +43,28 @@ class _HomePageState extends State<HomePage> {
   dynamic pickedLensModel;
   dynamic pickedLightSource;
   dynamic pickedFlash;
+  dynamic pickedComponentsConfiguration;
+  dynamic pickedGPSLatitudeRef;
+  dynamic pickedGPSLatitude;
+  dynamic pickedGPSLongitudeRef;
+  dynamic pickedGPSLongitude;
+  dynamic pickedGPSAltitudeRef;
+  dynamic pickedGPSAltitude;
+  dynamic pickedGPSProcessingMethod;
+  dynamic pickedGPSDate;
+  dynamic pickedImageDescription;
+  dynamic pickedCopyright;
+  dynamic IntNum;
+  dynamic IntNum2;
+  dynamic IntpickedF;
 
   //削除
   void clearimage() {
     setState(() {
       image = null;
+      pickedFNumber = "";
+      pickedDateTime = "";
+      pickedDateTimeOriginal = "";
     });
   }
 
@@ -67,6 +87,8 @@ class _HomePageState extends State<HomePage> {
     pickedResolutionUnit = tags["Image ResolutionUnit"].toString();
     pickedSoftware = tags["Image Software"].toString();
     pickedDateTimeOriginal = tags["EXIF DateTimeOriginal"].toString();
+    pickedImageDescription = tags["Image ImageDescription"].toString();
+    pickedCopyright = tags["Image Copyright"].toString();
     pickedShutterTime = tags["EXIF ExposureTime"].toString();
     pickedFNumber = tags["EXIF FNumber"].toString();
     pickedISOSpeedRatings = tags["EXIF ISOSpeedRatings"].toString();
@@ -79,14 +101,79 @@ class _HomePageState extends State<HomePage> {
     pickedLensModel = tags["EXIF LensModel"].toString();
     pickedLightSource = tags["EXIF LightSource"].toString();
     pickedFlash = tags["EXIF Flash"].toString();
+    pickedComponentsConfiguration = tags["EXIF ComponentsConfiguration"].toString();
+    pickedGPSLatitudeRef = tags["GPS GPSLatitudeRef"].toString();
+    pickedGPSLatitude = tags["GPS GPSLatitude"].toString();
+    pickedGPSLongitudeRef = tags["GPS GPSLongitudeRef"].toString();
+    pickedGPSLongitude = tags["GPS GPSLongitude"].toString();
+    pickedGPSAltitudeRef = tags["GPS GPSAltitudeRef"].toString();
+    pickedGPSAltitude = tags["GPS GPSAltitude"].toString();
+    pickedGPSProcessingMethod = tags["GPS GPSProcessingMethod"].toString();
+    pickedGPSDate = tags["GPS GPSDate"].toString();
+
+    // pickedDateTime== "null" ? pickedDateTime : pickedDateTime.replaceAll(":", "/").replaceFirst("/", ":", 12,).replaceFirst("/", ":", 16,);
     setState(() {
       image = File(pickedFile!.path);
-      // pickedMake;
-      // pickedModel;
-      // pickedDateTime;
-      // pickedWidth;
-      // pickedLength;
-      //pickedDateTime.isEmpty ? pickedDateTime : pickedDateTime.substring(0, 16).replaceAll(":", "/").replaceFirst("/", ":", 12);
+      //ファイル変更時間操作
+      if (pickedDateTime == "null" ){
+        pickedDateTime;
+      } else if (pickedDateTime != "null" ){
+        pickedDateTime = pickedDateTime.replaceAll(":", "/").replaceFirst("/", ":", 12,).replaceFirst("/", ":", 16,);
+        pickedDateTime;
+      }
+      //撮影時間
+      if (pickedDateTimeOriginal == "null" ){
+        pickedDateTimeOriginal;
+      } else if (pickedDateTimeOriginal != "null" ){
+        pickedDateTimeOriginal = pickedDateTimeOriginal.replaceAll(":", "/").replaceFirst("/", ":", 12,).replaceFirst("/", ":", 16,);
+        pickedDateTimeOriginal;
+      }
+      //F値操作
+      if (pickedFNumber == "null") {
+        return pickedFNumber;
+      }
+      if (pickedFNumber.length == 1) {
+        pickedFNumber = pickedFNumber + ".0";
+        return pickedFNumber;
+      }
+      //小数点ありのF値の表示がされないので計算をする
+      if (pickedFNumber.length == 3 || pickedFNumber.length == 4 ||
+          pickedFNumber.length == 5) {
+        //３文字の時
+        if (pickedFNumber.length == 3) {
+          var num1 = pickedFNumber.substring(0, 1);
+          var num2 = pickedFNumber.substring(2, 3);
+          //var IntpickedF = num1.parse(num1) / num3.parse(num3);
+          IntNum = int.parse(num1);
+          IntNum2 = int.parse(num2);
+          IntpickedF = IntNum / IntNum2;
+          pickedFNumber = IntpickedF.toString();
+          return pickedFNumber;
+        }
+        //4文字の時
+        else if (pickedFNumber.length == 4) {
+          var num1 = pickedFNumber.substring(0, 2);
+          var num2 = pickedFNumber.substring(3, 4);
+          //var IntpickedF = num1.parse(num1) / num3.parse(num3);
+          IntNum = int.parse(num1);
+          IntNum2 = int.parse(num2);
+          IntpickedF = IntNum / IntNum2;
+          pickedFNumber = IntpickedF.toString();
+          return pickedFNumber;
+        }
+        //5文字の時
+        else if (pickedFNumber.length == 5) {
+          var num1 = pickedFNumber.substring(0, 2);
+          var num2 = pickedFNumber.substring(3, 5);
+          //var IntpickedF = num1.parse(num1) / num3.parse(num3);
+          IntNum = int.parse(num1);
+          IntNum2 = int.parse(num2);
+          IntpickedF = IntNum / IntNum2;
+          pickedFNumber = IntpickedF.toString();
+          return pickedFNumber;
+        }
+      }
+
     });
     for (final entry in tags.entries) {
       print("${entry.key}: ${entry.value}");
@@ -128,6 +215,7 @@ class _HomePageState extends State<HomePage> {
               ? MainAxisAlignment.center
               : MainAxisAlignment.start,
           children: [
+            AdBanner(size: AdSize.banner),
             //画像の表示と選択
             image == null
                 ? Column(
@@ -209,9 +297,34 @@ class _HomePageState extends State<HomePage> {
                             ExifWidth(),
                             //縦幅
                             ExifLength(),
+                            //コンポネート
+                            ExifComponentsConfiguration(),
+                            //北緯南緯
+                            ExifGPSLatitudeRef(),
+                            //緯度
+                            ExifGPSLatitude(),
+                            //東経西経
+                            ExifGPSLongitudeRef(),
+                            //経度
+                            ExifGPSLongitude(),
+                            //高度の基準
+                            ExifGPSAltitudeRef(),
+                            //高度
+                            ExifGPSAltitude(),
+                            //測位方式
+                            ExifGPSProcessingMethod(),
+                            //GPS日付
+                            ExifGPSDate(),
+                            //著作権
+                            ExifCopyright(),
+                            //説明
+                            ExifImageDescription(),
+                            LineItem(),
+                            SizedBox(height: 20,),
+                            AdBanner(size: AdSize.banner),
                           ],
                         ),
-                      )
+                      ),
               ],
             )
           ],
@@ -515,6 +628,149 @@ class _HomePageState extends State<HomePage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [Text(S.of(context).Flash, style: TextStyle(fontSize: titleFont),), pickedFlash == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedFlash, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //コンポネート
+  ExifComponentsConfiguration() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).ComponentsConfiguration, style: TextStyle(fontSize: titleFont),), pickedComponentsConfiguration == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedComponentsConfiguration, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //北緯南緯
+  ExifGPSLatitudeRef() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).GPSLatitudeRef, style: TextStyle(fontSize: titleFont),), pickedGPSLatitudeRef == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedGPSLatitudeRef, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //緯度
+  ExifGPSLatitude() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).GPSLatitude, style: TextStyle(fontSize: titleFont),), pickedGPSLatitude == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedGPSLatitude, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //東経西経
+  ExifGPSLongitudeRef() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).GPSLongitudeRef, style: TextStyle(fontSize: titleFont),), pickedGPSLongitudeRef == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedGPSLongitudeRef, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //経度
+  ExifGPSLongitude() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).GPSLongitude, style: TextStyle(fontSize: titleFont),), pickedGPSLongitude == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedGPSLongitude, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //高度の基準
+  ExifGPSAltitudeRef() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).GPSAltitudeRef, style: TextStyle(fontSize: titleFont),), pickedGPSAltitudeRef == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedGPSAltitudeRef, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //高度
+  ExifGPSAltitude() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).GPSAltitude, style: TextStyle(fontSize: titleFont),), pickedGPSAltitude == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedGPSAltitude, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //測位方式
+  ExifGPSProcessingMethod() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).GPSProcessingMethod, style: TextStyle(fontSize: titleFont),), pickedGPSProcessingMethod == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedGPSProcessingMethod, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //GPS日付
+  ExifGPSDate() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).GPSDate, style: TextStyle(fontSize: titleFont),), pickedGPSDate == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedGPSDate, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //著作権
+  ExifCopyright() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).Copyright, style: TextStyle(fontSize: titleFont),), pickedCopyright == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedCopyright, style: TextStyle(fontSize: FontSize),)],
+        ),
+      ],
+    );
+  }
+  //説明
+  ExifImageDescription() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        LineItem(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [Text(S.of(context).ImageDescription, style: TextStyle(fontSize: titleFont),), pickedImageDescription == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedImageDescription, style: TextStyle(fontSize: FontSize),)],
         ),
       ],
     );
