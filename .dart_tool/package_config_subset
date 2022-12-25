@@ -66,6 +66,10 @@ flutter_plugin_android_lifecycle
 2.12
 file:///Users/kakegawashiori/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.7/
 file:///Users/kakegawashiori/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.7/lib/
+google_mobile_ads
+2.12
+file:///Users/kakegawashiori/.pub-cache/hosted/pub.dartlang.org/google_mobile_ads-2.3.0/
+file:///Users/kakegawashiori/.pub-cache/hosted/pub.dartlang.org/google_mobile_ads-2.3.0/lib/
 http
 2.14
 file:///Users/kakegawashiori/.pub-cache/hosted/pub.dartlang.org/http-0.13.5/
@@ -178,6 +182,10 @@ vector_math
 2.14
 file:///Users/kakegawashiori/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.4/
 file:///Users/kakegawashiori/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.4/lib/
+visibility_detector
+2.12
+file:///Users/kakegawashiori/.pub-cache/hosted/pub.dartlang.org/visibility_detector-0.3.3/
+file:///Users/kakegawashiori/.pub-cache/hosted/pub.dartlang.org/visibility_detector-0.3.3/lib/
 xml
 2.17
 file:///Users/kakegawashiori/.pub-cache/hosted/pub.dartlang.org/xml-6.1.0/

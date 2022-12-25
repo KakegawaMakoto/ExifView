@@ -8,7 +8,7 @@
 PRODUCT_NAME = exifview
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.makoto.exifview.exifview
+PRODUCT_BUNDLE_IDENTIFIER = com.makoto.exifview.exifview
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2022 com.example.makoto.exifview. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2022 com.makoto.exifview. All rights reserved.

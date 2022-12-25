@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.makoto.exifview.exifview">
+    package="com.makoto.exifview.exifview">
    <application
         android:label="exifview"
         android:name="${applicationName}"
@@ -30,5 +30,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+       <meta-data
+           android:name="com.google.android.gms.ads.APPLICATION_ID"
+           android:value="ca-app-pub-8178341167378513~5803312863"/>
     </application>
 </manifest>

@@ -1,4 +1,0 @@
-#Mon Dec 12 21:32:32 JST 2022
-base.0=/Users/kakegawashiori/Desktop/Flutter/camera_exif/ExifView/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
-renamed.0=classes.dex
-path.0=classes.dex
