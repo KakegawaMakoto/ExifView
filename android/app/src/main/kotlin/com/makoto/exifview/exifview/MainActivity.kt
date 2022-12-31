@@ -1,4 +1,4 @@
-package com.exifview.exifview
+package com.makoto.exifview.exifview
 
 import io.flutter.embedding.android.FlutterActivity
 
