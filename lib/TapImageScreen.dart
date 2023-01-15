@@ -8,16 +8,18 @@ class TapImageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black38,
-      ),
-      body: Center(
-        child: HeroImage(
-          image: image,
-          onTap: (){
-            Navigator.pop(context);
-          }
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black38,
+        ),
+        body: Center(
+          child: HeroImage(
+            image: image,
+            onTap: (){
+              Navigator.pop(context);
+            }
+          ),
         ),
       ),
     );

@@ -65,7 +65,13 @@ class _HomePageState extends State<HomePage> {
   dynamic IntNum2;
   dynamic IntpickedF;
   dynamic iPickedGPSLatitude;
+  dynamic iPickedGPSLong;
 
+  //緯度経度を「,」区切りにして配列に順に入れる
+  List<dynamic> GPSLat = [];
+  List<dynamic> GPSLatNum = [];
+  List<dynamic> GPSLong = [];
+  List<dynamic> GPSLongNum = [];
 
 
   //削除
@@ -75,6 +81,10 @@ class _HomePageState extends State<HomePage> {
       pickedFNumber = "";
       pickedDateTime = "";
       pickedDateTimeOriginal = "";
+      GPSLat.clear();
+      GPSLatNum.clear();
+      GPSLong.clear();
+      GPSLongNum.clear();
     });
   }
 
@@ -121,6 +131,7 @@ class _HomePageState extends State<HomePage> {
     pickedGPSProcessingMethod = tags["GPS GPSProcessingMethod"].toString();
     pickedGPSDate = tags["GPS GPSDate"].toString();
 
+    
     // pickedDateTime== "null" ? pickedDateTime : pickedDateTime.replaceAll(":", "/").replaceFirst("/", ":", 12,).replaceFirst("/", ":", 16,);
     setState(() {
       image = File(pickedFile!.path);
@@ -131,7 +142,34 @@ class _HomePageState extends State<HomePage> {
         pickedGPSLatitude = pickedGPSLatitude.replaceAll("]", "");
         pickedGPSLongitude = pickedGPSLongitude.replaceAll("[", "");
         pickedGPSLongitude = pickedGPSLongitude.replaceAll("]", "");
-        print(iPickedGPSLatitude.runtimeType);
+
+        GPSLong.addAll(pickedGPSLongitude.split(new RegExp(r',')));
+        GPSLat.addAll(pickedGPSLatitude.split(new RegExp(r',')));
+        if(GPSLat[2].contains("/")){
+          GPSLatNum = GPSLat[2].split(new RegExp(r'/'));
+          IntNum = int.parse(GPSLatNum[0]);
+          IntNum2 = int.parse(GPSLatNum[1]);
+          IntpickedF = IntNum / IntNum2;
+          GPSLat.insert(2, IntpickedF.toString());
+          GPSLat.removeAt(3);
+        }
+        if(GPSLong[2].contains("/")){
+          GPSLongNum = GPSLong[2].split(new RegExp(r'/'));
+          IntNum = int.parse(GPSLongNum[0]);
+          IntNum2 = int.parse(GPSLongNum[1]);
+          IntpickedF = IntNum / IntNum2;
+          GPSLong.insert(2, IntpickedF.toString());
+          GPSLong.removeAt(3);
+        }
+
+        print(GPSLat);
+        print(GPSLong);
+        print("緯度1　${GPSLat[0]}");
+        print("緯度2　${GPSLat[1]}");
+        print("緯度3　${GPSLat[2]}");
+        print("経度1　${GPSLong[0]}");
+        print("経度2　${GPSLong[1]}");
+        print("経度3　${GPSLong[2]}");
       }
 
       //ファイル変更時間操作
@@ -198,6 +236,7 @@ class _HomePageState extends State<HomePage> {
     for (final entry in tags.entries) {
       print("${entry.key}: ${entry.value}");
     }
+
   }
 
   //画像変更
@@ -318,6 +357,10 @@ class _HomePageState extends State<HomePage> {
                             ExifDateTime(),
                             //ソフトウェア
                             ExifSoftware(),
+                            //著作権
+                            ExifCopyright(),
+                            //説明
+                            ExifImageDescription(),
                             //解像度単位
                             ExifResolutionUnit(),
                             //解像度
@@ -344,10 +387,6 @@ class _HomePageState extends State<HomePage> {
                             ExifGPSProcessingMethod(),
                             //GPS日付
                             ExifGPSDate(),
-                            //著作権
-                            ExifCopyright(),
-                            //説明
-                            ExifImageDescription(),
                             LineItem(),
                             SizedBox(height: 20,),
                             AdBanner(size: AdSize.banner),
@@ -695,7 +734,9 @@ class _HomePageState extends State<HomePage> {
         LineItem(),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [Text(S.of(context).GPSLatitude, style: TextStyle(fontSize: titleFont),), pickedGPSLatitude == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedGPSLatitude, style: TextStyle(fontSize: FontSize),)],
+          //children: [Text(S.of(context).GPSLatitude, style: TextStyle(fontSize: titleFont),), pickedGPSLatitude == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedGPSLatitude, style: TextStyle(fontSize: FontSize),)],
+          children: [
+            Text(S.of(context).GPSLatitude, style: TextStyle(fontSize: titleFont),), pickedGPSLatitude == "null" ? Text(S.of(context).Unknow) : SelectableText(GPSLat.join(", "), style: TextStyle(fontSize: FontSize),)],
         ),
       ],
     );
@@ -721,7 +762,7 @@ class _HomePageState extends State<HomePage> {
         LineItem(),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [Text(S.of(context).GPSLongitude, style: TextStyle(fontSize: titleFont),), pickedGPSLongitude == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedGPSLongitude, style: TextStyle(fontSize: FontSize),)],
+          children: [Text(S.of(context).GPSLongitude, style: TextStyle(fontSize: titleFont),), pickedGPSLongitude == "null" ? Text(S.of(context).Unknow) : SelectableText(GPSLong.join(", "), style: TextStyle(fontSize: FontSize),)],
         ),
       ],
     );
