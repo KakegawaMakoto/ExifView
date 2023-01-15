@@ -7,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:exif/exif.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'Hero＿image.dart';
+import 'TapImageScreen.dart';
 import 'admob.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,6 +19,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  // final image = (image  != null) ? Image.asset("assets/images/imageIcon.png") : Image.file(
+  //   image!,
+  // ),
+
   File? image;
   final picker = ImagePicker();
 
@@ -57,6 +64,9 @@ class _HomePageState extends State<HomePage> {
   dynamic IntNum;
   dynamic IntNum2;
   dynamic IntpickedF;
+  dynamic iPickedGPSLatitude;
+
+
 
   //削除
   void clearimage() {
@@ -114,6 +124,16 @@ class _HomePageState extends State<HomePage> {
     // pickedDateTime== "null" ? pickedDateTime : pickedDateTime.replaceAll(":", "/").replaceFirst("/", ":", 12,).replaceFirst("/", ":", 16,);
     setState(() {
       image = File(pickedFile!.path);
+
+      //GPS操作
+      if(pickedGPSLatitude != "null" && pickedGPSLongitude != "null"){
+        pickedGPSLatitude = pickedGPSLatitude.replaceAll("[", "");
+        pickedGPSLatitude = pickedGPSLatitude.replaceAll("]", "");
+        pickedGPSLongitude = pickedGPSLongitude.replaceAll("[", "");
+        pickedGPSLongitude = pickedGPSLongitude.replaceAll("]", "");
+        print(iPickedGPSLatitude.runtimeType);
+      }
+
       //ファイル変更時間操作
       if (pickedDateTime == "null" ){
         pickedDateTime;
@@ -178,8 +198,6 @@ class _HomePageState extends State<HomePage> {
     for (final entry in tags.entries) {
       print("${entry.key}: ${entry.value}");
     }
-    print("1${pickedLength}");
-    print(pickedWidth.runtimeType);
   }
 
   //画像変更
@@ -235,18 +253,29 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                 )
-                : Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Container(
-                      child: SizedBox(
-                        height: 150,
-                        child: Image.file(
-                          image!,
-                          fit: BoxFit.scaleDown,
-                        ),
-                      ),
-                    ),
-                  ),
+            : Container(
+              height:  150,
+              child: HeroImage(
+                onTap: () => _DisplayLargeImage(context, image),
+                image: Image.file(
+                  image!,
+                  fit: BoxFit.scaleDown,
+              ),
+              ),
+            ),
+                // : Padding(
+                //     padding: const EdgeInsets.only(top: 10),
+                //     child: Container(
+                //       child: SizedBox(
+                //         height: 150,
+                //         child: Image.file(
+                //           image!,
+                //           fit: BoxFit.scaleDown,
+                //         ),
+                //       ),
+                //
+                //     ),
+                //   ),
             Column(
               children: [
                 image == null
@@ -776,5 +805,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
+  _DisplayLargeImage(BuildContext context, File? image) {
+   Navigator.push(context,
+       MaterialPageRoute(builder: (_) => TapImageScreen(image: (image == null)  ? Image.asset("assets/images/imageIcon.png") : Image.file(image) ) ));
+  }
 }
