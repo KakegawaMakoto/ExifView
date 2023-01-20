@@ -490,10 +490,10 @@ class S {
     );
   }
 
-  /// `GPSLatitude`
+  /// `GPSLatitude (DMS)`
   String get GPSLatitude {
     return Intl.message(
-      'GPSLatitude',
+      'GPSLatitude (DMS)',
       name: 'GPSLatitude',
       desc: '',
       args: [],
@@ -510,10 +510,10 @@ class S {
     );
   }
 
-  /// `GPSLongitude`
+  /// `GPSLongitude (DMS)`
   String get GPSLongitude {
     return Intl.message(
-      'GPSLongitude',
+      'GPSLongitude (DMS)',
       name: 'GPSLongitude',
       desc: '',
       args: [],

@@ -49,9 +49,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "GPSAltitude": MessageLookupByLibrary.simpleMessage("高度"),
         "GPSAltitudeRef": MessageLookupByLibrary.simpleMessage("高度の基準"),
         "GPSDate": MessageLookupByLibrary.simpleMessage("GPS日付"),
-        "GPSLatitude": MessageLookupByLibrary.simpleMessage("緯度"),
+        "GPSLatitude": MessageLookupByLibrary.simpleMessage("緯度(度分秒)"),
         "GPSLatitudeRef": MessageLookupByLibrary.simpleMessage("北緯(N)or 南緯(S)"),
-        "GPSLongitude": MessageLookupByLibrary.simpleMessage("経度"),
+        "GPSLongitude": MessageLookupByLibrary.simpleMessage("経度(度分秒)"),
         "GPSLongitudeRef":
             MessageLookupByLibrary.simpleMessage("東経(E)or 西経(W)"),
         "GPSProcessingMethod": MessageLookupByLibrary.simpleMessage("測位方式"),

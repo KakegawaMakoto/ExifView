@@ -13,8 +13,8 @@
 13         to allow setting breakpoints, to provide hot reload, etc.
 14    -->
 15    <uses-permission android:name="android.permission.INTERNET" />
-15-->/Users/kakegawashiori/Desktop/Flutter/camera_exif/ExifView/android/app/src/debug/AndroidManifest.xml:7:5-66
-15-->/Users/kakegawashiori/Desktop/Flutter/camera_exif/ExifView/android/app/src/debug/AndroidManifest.xml:7:22-64
+15-->/Users/kakegawashiori/Desktop/Flutter/camera_exif/ExifView/android/app/src/main/AndroidManifest.xml:3:5-67
+15-->/Users/kakegawashiori/Desktop/Flutter/camera_exif/ExifView/android/app/src/main/AndroidManifest.xml:3:22-64
 16    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 16-->[com.google.android.gms:play-services-ads-lite:21.3.0] /Users/kakegawashiori/.gradle/caches/transforms-3/137babacbe12a8916a2a3e6f9b58435e/transformed/jetified-play-services-ads-lite-21.3.0/AndroidManifest.xml:24:5-79
 16-->[com.google.android.gms:play-services-ads-lite:21.3.0] /Users/kakegawashiori/.gradle/caches/transforms-3/137babacbe12a8916a2a3e6f9b58435e/transformed/jetified-play-services-ads-lite-21.3.0/AndroidManifest.xml:24:22-76

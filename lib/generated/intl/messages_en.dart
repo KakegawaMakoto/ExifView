@@ -57,10 +57,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "GPSAltitudeRef":
             MessageLookupByLibrary.simpleMessage("GPSAltitudeRef"),
         "GPSDate": MessageLookupByLibrary.simpleMessage("GPSDate"),
-        "GPSLatitude": MessageLookupByLibrary.simpleMessage("GPSLatitude"),
+        "GPSLatitude":
+            MessageLookupByLibrary.simpleMessage("GPSLatitude (DMS)"),
         "GPSLatitudeRef":
             MessageLookupByLibrary.simpleMessage("GPSLatitudeRef"),
-        "GPSLongitude": MessageLookupByLibrary.simpleMessage("GPSLongitude"),
+        "GPSLongitude":
+            MessageLookupByLibrary.simpleMessage("GPSLongitude (DMS)"),
         "GPSLongitudeRef":
             MessageLookupByLibrary.simpleMessage("GPSLongitudeRef"),
         "GPSProcessingMethod":

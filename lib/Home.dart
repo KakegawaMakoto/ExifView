@@ -10,6 +10,8 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'Hero＿image.dart';
 import 'TapImageScreen.dart';
 import 'admob.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart' as latLng;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -72,6 +74,12 @@ class _HomePageState extends State<HomePage> {
   List<dynamic> GPSLatNum = [];
   List<dynamic> GPSLong = [];
   List<dynamic> GPSLongNum = [];
+  late String GpsLat10;
+  late double GpsLat10Num = 0;
+  late String GpsLong10;
+  late double GpsLong10Num = 0;
+  List<Marker> markers =[];
+
 
 
   //削除
@@ -81,10 +89,14 @@ class _HomePageState extends State<HomePage> {
       pickedFNumber = "";
       pickedDateTime = "";
       pickedDateTimeOriginal = "";
+      pickedGPSLatitude = "";
+      pickedGPSLongitude = "";
       GPSLat.clear();
       GPSLatNum.clear();
       GPSLong.clear();
       GPSLongNum.clear();
+      GpsLong10Num = 0.0;
+      GpsLat10Num = 0.0;
     });
   }
 
@@ -137,7 +149,9 @@ class _HomePageState extends State<HomePage> {
       image = File(pickedFile!.path);
 
       //GPS操作
-      if(pickedGPSLatitude != "null" && pickedGPSLongitude != "null"){
+      GpsLat10 = "0";
+      GpsLong10 = "0";
+      if(pickedGPSLatitude != "null" && pickedGPSLongitude != "null" ){
         pickedGPSLatitude = pickedGPSLatitude.replaceAll("[", "");
         pickedGPSLatitude = pickedGPSLatitude.replaceAll("]", "");
         pickedGPSLongitude = pickedGPSLongitude.replaceAll("[", "");
@@ -152,6 +166,8 @@ class _HomePageState extends State<HomePage> {
           IntpickedF = IntNum / IntNum2;
           GPSLat.insert(2, IntpickedF.toString());
           GPSLat.removeAt(3);
+          GpsLat10Num = double.parse(GPSLat[0]) + (double.parse(GPSLat[1]) * 60 + double.parse(GPSLat[2]) ) / 3600;
+          GpsLat10 = GpsLat10Num.toString();
         }
         if(GPSLong[2].contains("/")){
           GPSLongNum = GPSLong[2].split(new RegExp(r'/'));
@@ -160,16 +176,18 @@ class _HomePageState extends State<HomePage> {
           IntpickedF = IntNum / IntNum2;
           GPSLong.insert(2, IntpickedF.toString());
           GPSLong.removeAt(3);
+          GpsLong10Num = double.parse(GPSLong[0]) + (double.parse(GPSLong[1]) * 60 + double.parse(GPSLong[2]) ) / 3600;
+          GpsLong10 = GpsLong10Num.toString();
         }
-
-        print(GPSLat);
-        print(GPSLong);
+        print(GpsLat10);
+        print(GpsLong10);
         print("緯度1　${GPSLat[0]}");
         print("緯度2　${GPSLat[1]}");
         print("緯度3　${GPSLat[2]}");
         print("経度1　${GPSLong[0]}");
         print("経度2　${GPSLong[1]}");
         print("経度3　${GPSLong[2]}");
+
       }
 
       //ファイル変更時間操作
@@ -388,6 +406,7 @@ class _HomePageState extends State<HomePage> {
                             //GPS日付
                             ExifGPSDate(),
                             LineItem(),
+                            (pickedGPSLatitude != "null" && pickedGPSLongitude != "null") ? MapContainer() : Container(),
                             SizedBox(height: 20,),
                             AdBanner(size: AdSize.banner),
                           ],
@@ -736,7 +755,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           //children: [Text(S.of(context).GPSLatitude, style: TextStyle(fontSize: titleFont),), pickedGPSLatitude == "null" ? Text(S.of(context).Unknow) : SelectableText(pickedGPSLatitude, style: TextStyle(fontSize: FontSize),)],
           children: [
-            Text(S.of(context).GPSLatitude, style: TextStyle(fontSize: titleFont),), pickedGPSLatitude == "null" ? Text(S.of(context).Unknow) : SelectableText(GPSLat.join(", "), style: TextStyle(fontSize: FontSize),)],
+            Text(S.of(context).GPSLatitude, style: TextStyle(fontSize: titleFont),), pickedGPSLatitude == "null" ? Text(S.of(context).Unknow) : SelectableText(GPSLat.join(","), style: TextStyle(fontSize: FontSize),)],
         ),
       ],
     );
@@ -762,7 +781,7 @@ class _HomePageState extends State<HomePage> {
         LineItem(),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [Text(S.of(context).GPSLongitude, style: TextStyle(fontSize: titleFont),), pickedGPSLongitude == "null" ? Text(S.of(context).Unknow) : SelectableText(GPSLong.join(", "), style: TextStyle(fontSize: FontSize),)],
+          children: [Text(S.of(context).GPSLongitude, style: TextStyle(fontSize: titleFont),), pickedGPSLongitude == "null" ? Text(S.of(context).Unknow) : SelectableText(GPSLong.join(","), style: TextStyle(fontSize: FontSize),)],
         ),
       ],
     );
@@ -846,8 +865,52 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  //画像拡大の遷移
   _DisplayLargeImage(BuildContext context, File? image) {
    Navigator.push(context,
        MaterialPageRoute(builder: (_) => TapImageScreen(image: (image == null)  ? Image.asset("assets/images/imageIcon.png") : Image.file(image) ) ));
+  }
+
+  //Map表示
+  MapContainer() {
+    return  Container(
+      width: 300,
+      height: 350,
+      child: FlutterMap(
+          options: MapOptions(
+            center: latLng.LatLng(GpsLat10Num!, GpsLong10Num!),
+            zoom: 16.3,
+            maxZoom: 18.3,
+            minZoom: 1.0,
+          ),
+
+        children: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'com.makoto.exifview.exifview',
+          ),
+          MarkerLayer(
+            markers: [
+              Marker(
+                point: latLng.LatLng(GpsLat10Num == 0 ? 0.0 :GpsLat10Num, GpsLong10Num == 0 ? 0.0 : GpsLong10Num),
+                width: 60,
+                height: 60,
+                builder: (context) => const Icon(
+                  size:50,
+                  Icons.location_pin,
+                  color: Colors.red,
+                ),
+              ),
+            ],
+        )
+        ],
+        // nonRotatedChildren: [
+        //   AttributionWidget.defaultWidget(
+        //     source: 'OpenStreetMap contributors',
+        //     onSourceTapped: null,
+        //   ),
+        // ],
+        ),
+    );
   }
 }
